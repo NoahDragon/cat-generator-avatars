@@ -34,7 +34,7 @@ class AvatarTest extends TestCase {
 			->once()
 			->withArgs( [
 				Mockery::type( 'string' ),
-				'adorable-avatars',
+				'cat-generator-avatars',
 			] )
 			->andReturn( $text );
 
