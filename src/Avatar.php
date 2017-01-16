@@ -22,13 +22,21 @@ class Avatar {
     /**
     * @var string
     */
-    private $cachefolder = '/cache/';
+    private $cachefolder;
 
     /**
     * @var string
     */
-    private $pluginfolder = WP_PLUGIN_DIR . '/cat-generator-avatars/';
-
+    private $pluginfolder;
+    
+    /**
+    * Constructor
+    */
+    public function __construct() {
+        $this->pluginfolder = WP_PLUGIN_DIR . '/cat-generator-avatars/';
+        $this->cachefolder = '/cache/';
+    }
+    
     /**
     * Adds "cat-generator-avatar" to the default avatars.
     *
