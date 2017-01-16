@@ -1,0 +1,43 @@
+{
+  "name": "NoahDragon/cat-generator-avatars",
+  "description": "This plugin integrates the Cat Generator Avatars avatar into WordPress.",
+  "type": "wordpress-plugin",
+  "keywords": [
+    "avatar",
+    "image",
+    "profile",
+    "user"
+  ],
+  "homepage": "https://github.com/NoahDragon/cat-generator-avatars",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Abner Chou",
+      "email": "hi@abnerchou.me",
+      "homepage": "http://abnerchou.me",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/NoahDragon/cat-generator-avatars/issues",
+    "source": "https://github.com/NoahDragon/cat-generator-avatars"
+  },
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "require-dev": {
+    "brain/monkey": "^1.4.0",
+    "mockery/mockery": "^0.9.7",
+    "phpunit/phpunit": "~4.8|~5.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "abnerchou\\CatGeneratorAvatars\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "abnerchou\\CatGeneratorAvatars\\Tests\\": "tests/php"
+    }
+  }
+}
