@@ -28,7 +28,7 @@ class AvatarTest extends TestCase {
 	 */
 	public function test_adding_to_defaults( array $defaults ) {
 
-		$text = 'Adorable Avatar (Generated)';
+		$text = 'Cat Avatar (Generated)';
 
 		Monkey\Functions::expect( '__' )
 			->once()
