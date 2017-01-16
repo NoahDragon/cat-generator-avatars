@@ -7,6 +7,8 @@ use Mockery;
 use abnerchou\CatGeneratorAvatars\Avatar as Testee;
 use abnerchou\CatGeneratorAvatars\Tests\TestCase;
 
+define('WP_PLUGIN_DIR', './');
+
 /**
  * Test case for the avatar model.
  *
