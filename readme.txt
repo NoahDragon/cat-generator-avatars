@@ -2,7 +2,7 @@
 Contributors: Abner Chou
 Tags: avatar, image, profile, user, cat
 Requires at least: 2.9.0
-Tested up to: 4.7
+Tested up to: 4.7.1
 
 This plugin integrates the Cat Generator Avatars avatar into WordPress.
 
