@@ -74,7 +74,7 @@ class AvatarTest extends TestCase {
 
 		$avatar = 'some-avatar-here';
 
-		$this->assertSame( $avatar, ( new Testee() )->filter_avatar( $avatar, null, null, null, null, [] ) );
+		$this->assertSame( $avatar, ( new Testee() )->filter_avatar( $avatar, null, null, null, null, ['default' => 'wrong'] ) );
 	}
 
 	/**
@@ -89,6 +89,7 @@ class AvatarTest extends TestCase {
 		$avatar = 'some-avatar-here';
 
 		$this->assertSame( $avatar, ( new Testee() )->filter_avatar( $avatar, null, null, Testee::NAME, null, [
+			'default' => Testee::NAME,
 			'force_default' => false,
 			'found_avatar'  => true,
 		] ) );
@@ -116,6 +117,7 @@ class AvatarTest extends TestCase {
 		$alt = 'some alt text';
 
 		$args = [
+			'default'    => Testee::NAME,
 			'class'      => 'some classes here',
 			'extra_attr' => 'some="attr"',
 		];
@@ -178,7 +180,7 @@ class AvatarTest extends TestCase {
 
 		$size = rand( 0, 400 );
 
-		$avatar = ( new Testee() )->filter_avatar( null, $id_or_email, $size, Testee::NAME, null, [] );
+		$avatar = ( new Testee() )->filter_avatar( null, $id_or_email, $size, Testee::NAME, null, ['default' => Testee::NAME] );
 
 		$this->assertRegExp( '~ src="[^"]+/' . $size . '/' . $identifier . '\.png"~', $avatar );
 
