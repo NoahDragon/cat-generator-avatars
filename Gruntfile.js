@@ -10,11 +10,7 @@ module.exports = function ( grunt ) {
 
 			slug: 'adorable-avatars',
 
-			src: 'src/',
-
-			tests: {
-				php: 'tests/php/'
-			}
+			src: 'src/'
 		},
 
 		/**
@@ -81,12 +77,6 @@ module.exports = function ( grunt ) {
 
 			src: {
 				src: [ '<%= config.src %>**/*.php' ]
-			},
-
-			tests: {
-				src: [
-					'<%= config.tests.php %>**/*.php'
-				]
 			}
 		},
 
@@ -100,10 +90,6 @@ module.exports = function ( grunt ) {
 
 			src: {
 				src: [ '<%= config.src %>**/*.php' ]
-			},
-
-			tests: {
-				src: [ '<%= config.tests.php %>**/*.php' ]
 			}
 		},
 
