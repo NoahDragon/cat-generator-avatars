@@ -10,7 +10,11 @@ module.exports = function ( grunt ) {
 
 			slug: 'cat-generator-avatars',
 
-			src: 'src/'
+			src: 'src/',
+
+			img: 'img/',
+
+			cache: 'cache/'
 		},
 
 		/**
@@ -109,12 +113,14 @@ module.exports = function ( grunt ) {
 			release: {
 				src: [
 					'*.{php,txt}',
-					'LICENSE',
-					'<%= config.src %>**/*.php'
+					'LICENCE',
+					'<%= config.src %>**/*.php',
+					'<%= config.img %>**/*',
+					'<%= config.cache %>**/.placeholder'
 				],
 				dest: '<%= config.slug %>.zip',
 				router( filepath ) {
-					filepath = 'LICENSE' === filepath ? 'license.txt' : filepath;
+					filepath = 'LICENCE' === filepath ? 'licence.txt' : filepath;
 
 					return grunt.template.process( `<%= config.slug %>/${filepath}` );
 				}
