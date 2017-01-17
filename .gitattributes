@@ -11,3 +11,5 @@
 /.gitignore export-ignore
 /.travis.yml export-ignore
 /phpunit.xml.dist export-ignore
+/composer.json export-ignore
+/package.json export-ignore
