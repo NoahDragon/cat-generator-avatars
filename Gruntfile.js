@@ -8,7 +8,7 @@ module.exports = function ( grunt ) {
 				dest: 'svn-assets/'
 			},
 
-			slug: 'adorable-avatars',
+			slug: 'cat-generator-avatars',
 
 			src: 'src/'
 		},
