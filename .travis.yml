@@ -24,5 +24,4 @@ install:
   - travis_retry composer install
 
 script:
-  - find src tests/php \( -name '*.php' \) -exec php -l {} \;
-  - phpunit
+  - find src \( -name '*.php' \) -exec php -l {} \;
