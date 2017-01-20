@@ -1,6 +1,6 @@
 # Cat Generator Avatars
 
-[![Build Status](https://travis-ci.org/NoahDragon/cat-generator-avatars.svg?branch=master)](https://travis-ci.org/NoahDragon/cat-generator-avata
+[![Build Status](https://travis-ci.org/NoahDragon/cat-generator-avatars.svg?branch=master)](https://travis-ci.org/NoahDragon/cat-generator-avatars)
 
 ## Description
 
@@ -16,10 +16,10 @@ This plugin requires **PHP 5.4** above.
 
 ## Screenshots
 
-![Setting](resources/assets/screenshot-1.jpg)  
+![Setting](resources/assets/screenshot-1.png)  
 **Default Avatar setting** - Here you can select _Adorable Avatars_ as default avatar setting.
 
-![Sample](resources/assets/screenshot-2.jpg)  
+![Sample](resources/assets/screenshot-2.png)  
 **Preview** - Enjoy the cute cat in your discussion.
 
 
