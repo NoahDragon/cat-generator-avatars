@@ -12,11 +12,11 @@ This plugin integrates the <a href="http://www.peppercarrot.com/en/article391/ca
 
 = Contribution =
 
-<a href="http://www.peppercarrot.com/en/article391/cat-avatar-generator" target="_blank">David Revoy</a> provides the fantastic arts and base code.
+To **contribute** to this plugin, please see its <a href="https://github.com/NoahDragon/cat-generator-avatars" target="_blank">**GitHub repository**</a>.
 
-<a href="https://github.com/tfrommen/adorable-avatars" target="_blank">Thorsten Frommen</a> provides the beautiful and clean wordpress plugin structure.
+If you have a feature request, or if you have developed the feature already, please feel free to use the Issues and/or Pull Requests section.
 
-<a href="http://en.abnerchou.me" target="_blank">Abner Chou</a> does the rest work.
+Of course, you can also provide me with <a href="https://translate.wordpress.org/projects/wp-plugins/cat-generator-avatars" target="_blank">translations</a> if you would like to use the plugin in another not yet included language.
 
 == Installation ==
 
@@ -35,3 +35,11 @@ This plugin requires **PHP 5.4**.
 
 = 1.0.0 =
 * Initial release.
+
+== Credits ==
+
+<a href="http://www.peppercarrot.com/en/article391/cat-avatar-generator" target="_blank">David Revoy</a> provides the fantastic arts and base code.
+
+<a href="https://github.com/tfrommen/adorable-avatars" target="_blank">Thorsten Frommen</a> provides the beautiful and clean wordpress plugin structure.
+
+<a href="http://en.abnerchou.me" target="_blank">Abner Chou</a> does the rest work.
