@@ -16,11 +16,12 @@ This plugin requires **PHP 5.4** above.
 
 ## Screenshots
 
-![Setting](resources/assets/screenshot-1.png)  
 **Default Avatar setting** - Here you can select _Adorable Avatars_ as default avatar setting.
+![Setting](resources/assets/screenshot-1.png)  
 
+
+**Preview** - Enjoy the cute cat in your discussion. [Live Demo](http://legofan.cc/hello-world/#comments-title)
 ![Sample](resources/assets/screenshot-2.png)  
-**Preview** - Enjoy the cute cat in your discussion.
 
 
 ## Contribution

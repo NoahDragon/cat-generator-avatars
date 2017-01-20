@@ -24,11 +24,12 @@ npm-debug.log*
 # PHPUnit
 phpunit.xml
 
-
 # Generated files
 /svn-assets
 /*.zip
 
+# SVN folder
+/svn
 
 # Git
 !.gitkeep

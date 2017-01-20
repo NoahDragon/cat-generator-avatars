@@ -1,5 +1,6 @@
 === Cat Generator Avatars ===
-Contributors: Abner Chou
+Contributors: abnerchou
+Donate link: https://www.patreon.com/davidrevoy
 Tags: avatar, image, profile, user, cat
 Requires at least: 2.9.0
 Tested up to: 4.7.1
@@ -9,6 +10,8 @@ This plugin integrates the Cat Generator Avatars avatar into WordPress.
 == Description ==
 
 This plugin integrates the <a href="http://www.peppercarrot.com/en/article391/cat-avatar-generator" target="_blank">Cat Generator</a> avatar into WordPress.
+
+If you like this plugin, please donate to the artist David Revoy via the <a href="https://www.patreon.com/davidrevoy" target="_blank">donation link</a>.
 
 = Contribution =
 
@@ -29,7 +32,7 @@ This plugin requires **PHP 5.4**.
 == Screenshots ==
 
 1. **Default Avatar setting** - Here you can select _Cat Avatars (Generated)_ as default avatar setting.
-2. **Preview** - Enjoy the cute cat in your discussion.
+2. **Preview** - Enjoy the cute cat in your discussion. <a href="http://legofan.cc/hello-world/#comments-title" target="_blank">Live Demo</a> 
 
 == Changelog ==
 
