@@ -12,7 +12,11 @@ This plugin integrates the <a href="http://www.peppercarrot.com/en/article391/ca
 
 = Contribution =
 
-TBD
+<a href="http://www.peppercarrot.com/en/article391/cat-avatar-generator" target="_blank">David Revoy</a> provides the fantastic arts and base code.
+
+<a href="https://github.com/tfrommen/adorable-avatars" target="_blank">Thorsten Frommen</a> provides the beautiful and clean wordpress plugin structure.
+
+<a href="http://en.abnerchou.me" target="_blank">Abner Chou</a> does the rest work.
 
 == Installation ==
 
@@ -25,6 +29,7 @@ This plugin requires **PHP 5.4**.
 == Screenshots ==
 
 1. **Default Avatar setting** - Here you can select _Cat Avatars (Generated)_ as default avatar setting.
+2. **Preview** - Enjoy the cute cat in your discussion.
 
 == Changelog ==
 
