@@ -100,6 +100,104 @@ class Avatar {
         return $avatar;
     }
 
+
+	/**
+	* This method is used to filter just the avatar URL. Basically the same as set_buddypress_avatar(),
+    * but it does not return the full <img /> tag, it just returns the image URL
+	*
+	* @param string $image_url
+	* @param array $params
+	*
+	* @return string
+	*/
+    public function get_avatar_url($id_or_email, $size){
+      
+        $id = $this->get_identifier($id_or_email);
+        $cachepath = $this->pluginfolder.''.$this->cachefolder;
+        $cachefile = ''.$cachepath.''.$id.'.jpg';
+
+        if (! file_exists($cachefile) ) {
+            $this->build_monster($id);
+        }
+
+        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder.''.$id.'.jpg';
+        return $url;
+    }
+    /**
+    * This method is used to filter every avatar, except for anonymous comments.
+    * It returns full <img /> HTML tag
+    *
+    * @param string $html_data
+    * @param array $params
+    *
+    * @return string
+    */
+    public function set_buddypress_avatar($html_data = '', $params = array()){
+
+        if (empty($params)){ // data not supplied
+            return $html_data; // return original image
+        }
+
+        // these params are very well documented in BuddyPress' bp-core-avatar.php file:
+        $id = $params['item_id'];
+        $object = $params['object'];
+        $size = $params['width'];
+        $alt = $params['alt'];
+        $email = $params['email'];
+
+        if ($object == 'user'){ // if we are filtering user's avatar
+
+            if (empty($id) && $id !== 0){ // if id not specified (and id not equal 0)
+                if (is_user_logged_in()){ // if user logged in
+                    $user = get_user_by('id', get_current_user_id());
+                    $id = get_current_user_id(); // get current user's id
+                } else {
+                    return $html_data; // no id specified and user not logged in - return the original image
+                }
+            }
+
+        } else if ($object == 'group'){ // we're filtering group
+            return $html_data;
+        } else if ($object == 'blog'){ // we're filtering blog
+            return $html_data;	// this feature is not used at all, so just return the input parameter
+        } else { // not user, not group and not blog - just return the input html image
+            return $html_data;
+        }
+
+        $cat_uri = $this->get_avatar_url($id, $size); // get letter URL
+
+        $avatar_img_output = $this->generate_avatar_img_tag($cat_uri, $size, $alt); // get final <img /> tag for the avatar/gravatar
+
+        return $avatar_img_output;
+
+    }
+
+    /**
+    * Generate full HTML <img /> tag with avatar URL, size, CSS classes etc.
+    *
+    * @param string $avatar_uri
+    * @param string $size
+    * @param string $alt
+    * @param array $args
+    *
+    * @return string
+    */
+    private function generate_avatar_img_tag($avatar_uri, $size, $alt = '', $args = array()){
+
+     $avatar = sprintf(
+     '<img src="%1$s" srcset="%2$s 2x" width="%3$d" height="%3$d" class="%4$s" alt="%5$s" %6$s>',
+     esc_url( $avatar_uri ),
+     esc_url( $avatar_uri ),
+     esc_attr( $size ),
+     esc_attr( $this->get_class_value( $size, $args ) ),
+     esc_attr( $alt ),
+     isset( $args['extra_attr'] ) ? $args['extra_attr'] : ''
+     );
+
+     return $avatar;
+    }
+
+    
     /**
     * Returns the identifier string for the given user identifier.
     *
