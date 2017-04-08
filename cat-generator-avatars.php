@@ -37,6 +37,12 @@ function bootstrap() {
     $avatar = new Avatar();
     add_filter( 'avatar_defaults', [ $avatar, 'add_to_defaults' ] );
     add_filter( 'get_avatar', [ $avatar, 'filter_avatar' ], 10, 6 );
+    		
+    // add filter to bp_core_fetch_avatar:
+    add_filter('bp_core_fetch_avatar', array($avatar, 'set_buddypress_avatar'), 10, 2); // this is used for every avatar call except the anonymous comment posters
+
+    // filter just the avatar URL:
+    add_filter('bp_core_fetch_avatar_url', array($avatar, 'get_avatar_url'), 10, 2);
 }
 
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
