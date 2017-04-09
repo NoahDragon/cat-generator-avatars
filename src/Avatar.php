@@ -28,7 +28,7 @@ class Avatar {
     * @var string
     */
     private $pluginfolder;
-    
+
     /**
     * Constructor
     */
@@ -36,7 +36,7 @@ class Avatar {
         $this->pluginfolder = WP_PLUGIN_DIR . '/cat-generator-avatars/';
         $this->cachefolder = '/cache/';
     }
-    
+
     /**
     * Adds "cat-generator-avatar" to the default avatars.
     *
@@ -73,9 +73,16 @@ class Avatar {
             return $avatar;
         }
 
-        if ( $this->validate_gravatar($id_or_email) ) {
+				//JM: check $avatar is not a custom uploaded image, previously custom images were ignored in user listings
+				//and code went on to overwrite with cat-generator image
+				if (stripos($avatar, 'wp-content/uploads/avatar') !== false) {
             return $avatar;
         }
+				//JM: gravatar may be (should be) disabled so this check should be removed?
+				//in particular this check slows down the user listing...
+        //if ( $this->validate_gravatar($id_or_email) ) {
+        //    return $avatar;
+        //}
 
         $id = $this->get_identifier($id_or_email);
         $cachepath = $this->pluginfolder.''.$this->cachefolder;
@@ -111,7 +118,7 @@ class Avatar {
 	* @return string
 	*/
     public function get_avatar_url($id_or_email, $size){
-      
+
         $id = $this->get_identifier($id_or_email);
         $cachepath = $this->pluginfolder.''.$this->cachefolder;
         $cachefile = ''.$cachepath.''.$id.'.jpg';
@@ -137,6 +144,11 @@ class Avatar {
         if (empty($params)){ // data not supplied
             return $html_data; // return original image
         }
+
+			//if we got here because user is submitting a new image,
+			if ( isset( $_POST['avatar-crop-submit'] ) ) {
+				return $html_data; // return original image
+			}
 
         // these params are very well documented in BuddyPress' bp-core-avatar.php file:
         $id = $params['item_id'];
@@ -164,13 +176,58 @@ class Avatar {
             return $html_data;
         }
 
-        $cat_uri = $this->get_avatar_url($id, $size); // get letter URL
+			if (stripos($html_data, 'wp-content/uploads/avatar') !== false){
+				return $html_data;
+			}else{
+				$cat_uri = $this->get_avatar_url($id, $size); // get URL
 
         $avatar_img_output = $this->generate_avatar_img_tag($cat_uri, $size, $alt); // get final <img /> tag for the avatar/gravatar
 
         return $avatar_img_output;
+			}
+		}
 
-    }
+		/**
+		* This method is used to filter just the avatar URL. Basically the same as set_buddypress_avatar(),
+		* but it does not return the full <img /> tag, it just returns the image URL
+		*
+		* @param string $image_url
+		* @param array $params
+		*
+		* @return string
+		*/
+		public function set_buddypress_avatar_url($image_url = '', $params = array()) {
+
+			//if we got here because user is submitting a new image,
+			if ( isset( $_POST['avatar-crop-submit'] ) ) {
+				return $image_url; // return original image
+			}
+
+			$user_id = $params['item_id'];
+			$size = $params['width'];
+			$email = $params['email'];
+
+			if (!is_numeric($user_id)){ // user_id was not passed, so we cannot do anything about this avatar
+				return $image_url;
+			}
+
+
+
+			// if there is already a gravatar image or local upload, user has set his own profile avatar,
+			// in which case, just return the input data and leave the avatar as it was:
+			if ((stripos($image_url, 'gravatar.com/avatar') !== false) || (stripos($image_url, 'wp-content/uploads/avatar') !== false)) {
+				return $image_url;
+			}
+			if (empty($size)){ // if for some reason size was not specified...
+				$size = 48; // just set it to 48
+			}
+			if ( ($image_url==='' ) || (stripos($image_url, 'cat-generator') !== false ) ||  (stripos($image_url, 'mystery-man') !== false ) ) {
+				return get_avatar_url($user_id, $size);
+			}else{
+//				return get_avatar_url($user_id, $size);
+				return $image_url;
+			}
+		}
 
     /**
     * Generate full HTML <img /> tag with avatar URL, size, CSS classes etc.
@@ -197,7 +254,7 @@ class Avatar {
      return $avatar;
     }
 
-    
+
     /**
     * Returns the identifier string for the given user identifier.
     *

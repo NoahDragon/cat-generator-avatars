@@ -1,11 +1,11 @@
 === Cat Generator Avatars ===
-Contributors: abnerchou
+Contributors: abnerchou, jonathanmoorebcsorg
 Donate link: https://www.patreon.com/davidrevoy
 Tags: avatar, image, profile, user, cat
 Requires at least: 2.9.0
-Tested up to: 4.7.1
+Tested up to: 4.7.3
 
-This plugin integrates the Cat Generator Avatars avatar into WordPress.
+This plugin integrates the Cat Generator Avatars avatar into WordPress and BuddyPress.
 
 == Description ==
 
@@ -35,6 +35,9 @@ This plugin requires **PHP 5.4**.
 2. **Preview** - Enjoy the cute cat in your discussion. <a href="http://legofan.cc/hello-world/#comments-title" target="_blank">Live Demo</a> 
 
 == Changelog ==
+
+= 1.0.1 =
+* Initial support for BuddyPress.
 
 = 1.0.0 =
 * Initial release.

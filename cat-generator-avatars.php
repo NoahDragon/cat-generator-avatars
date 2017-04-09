@@ -2,12 +2,12 @@
 /*
 * Plugin Name: Cat Generator Avatars
 * Plugin URI:  https://wordpress.org/plugins/cat-generator-avatars/
-* Description: This plugin integrates the Cat Generator Avatars avatar placeholder service into WordPress.
+* Description: This plugin integrates the Cat Generator Avatars avatar placeholder service into WordPress (and now BuddyPress).
 * Author:      Abner Chou
 * Author URI:  http://en.abnerchou.me
 * Artist:      David Revoy
 * Artist URI:	http://www.peppercarrot.com/
-* Version:     1.0.0
+* Version:     1.0.1
 * Text Domain: cat-generator-avatars
 * License:     MIT
 */
@@ -37,12 +37,17 @@ function bootstrap() {
     $avatar = new Avatar();
     add_filter( 'avatar_defaults', [ $avatar, 'add_to_defaults' ] );
     add_filter( 'get_avatar', [ $avatar, 'filter_avatar' ], 10, 6 );
-    		
+
+		//stop BuddyPress searching Gravatar
+		add_filter( 'bp_core_fetch_avatar_no_grav', '__return_true' );
+
     // add filter to bp_core_fetch_avatar:
     add_filter('bp_core_fetch_avatar', array($avatar, 'set_buddypress_avatar'), 10, 2); // this is used for every avatar call except the anonymous comment posters
 
     // filter just the avatar URL:
-    add_filter('bp_core_fetch_avatar_url', array($avatar, 'get_avatar_url'), 10, 2);
+		add_filter('bp_core_fetch_avatar_url', array($avatar, 'set_buddypress_avatar_url'), 10, 2);
+
+
 }
 
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\bootstrap' );
