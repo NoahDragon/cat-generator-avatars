@@ -1,7 +1,7 @@
 === Cat Generator Avatars ===
 Contributors: abnerchou, jonathanmoorebcsorg
 Donate link: https://www.patreon.com/davidrevoy
-Tags: avatar, image, profile, user, cat
+Tags: avatar, image, profile, user, cat, buddypress
 Requires at least: 2.9.0
 Tested up to: 4.7.3
 
