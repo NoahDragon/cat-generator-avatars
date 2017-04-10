@@ -36,6 +36,9 @@ This plugin requires **PHP 5.4**.
 
 == Changelog ==
 
+= 1.0.2 =
+* Fixed slow avatar generation.
+
 = 1.0.1 =
 * Initial support for BuddyPress.
 

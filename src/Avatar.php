@@ -86,13 +86,13 @@ class Avatar {
 
         $id = $this->get_identifier($id_or_email);
         $cachepath = $this->pluginfolder.''.$this->cachefolder;
-        $cachefile = ''.$cachepath.''.$id.'.jpg';
+        $cachefile = ''.$cachepath.''.$id.'.png';
 
         if (! file_exists($cachefile) ) {
             $this->build_monster($id);
         }
 
-        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder.''.$id.'.jpg';
+        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder.''.$id.'.png';
 
         $avatar = sprintf(
         '<img src="%1$s" srcset="%2$s 2x" width="%3$d" height="%3$d" class="%4$s" alt="%5$s" %6$s>',
@@ -121,13 +121,13 @@ class Avatar {
 
         $id = $this->get_identifier($id_or_email);
         $cachepath = $this->pluginfolder.''.$this->cachefolder;
-        $cachefile = ''.$cachepath.''.$id.'.jpg';
+        $cachefile = ''.$cachepath.''.$id.'.png';
 
         if (! file_exists($cachefile) ) {
             $this->build_monster($id);
         }
 
-        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder.''.$id.'.jpg';
+        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder.''.$id.'.png';
         return $url;
     }
     /**
@@ -337,7 +337,8 @@ class Avatar {
         $monster = @imagecreatetruecolor(256, 256)
         or die("GD image create failed");
         $white   = imagecolorallocate($monster, 255, 255, 255);
-        imagefill($monster,0,0,$white);
+        //imagefill($monster,0,0,$white);
+				imagefilledrectangle($monster, 0, 0, 256, 256, $white);
 
         // add parts
         foreach($parts as $part => $num){
@@ -355,12 +356,14 @@ class Avatar {
 
 
         $cachepath = $this->pluginfolder.''.$this->cachefolder;
-        $cachefile = ''.$cachepath.''.$seed.'.jpg';
+        $cachefile = ''.$cachepath.''.$seed.'.png';
 
         // Save/cache the output to a file
         $savedfile = fopen($cachefile, 'w+'); # w+ to be at start of the file, write mode, and attempt to create if not existing.
 
-        imagejpeg($monster, $savedfile);
+        //imagejpeg($monster, $savedfile);
+				imagepng($monster, $cachefile, 1, PNG_NO_FILTER);
+
         imagedestroy($monster);
     }
 
@@ -372,50 +375,50 @@ class Avatar {
     *
     * @return boolean  true: Gravatar exits; false: Gravatar not exits.
     */
-    private function validate_gravatar($id_or_email) {
-        //id or email code borrowed from wp-includes/pluggable.php
-        $email = '';
-        if ( is_numeric($id_or_email) ) {
-            $id = (int) $id_or_email;
-            $user = get_userdata($id);
-            if ( $user )
-                $email = $user->user_email;
-        } elseif ( is_object($id_or_email) ) {
-            // No avatar for pingbacks or trackbacks
-            $allowed_comment_types = apply_filters( 'get_avatar_comment_types', array( 'comment' ) );
-            if ( ! empty( $id_or_email->comment_type ) && ! in_array( $id_or_email->comment_type, (array) $allowed_comment_types ) )
-                return false;
-
-            if ( !empty($id_or_email->user_id) ) {
-                $id = (int) $id_or_email->user_id;
-                $user = get_userdata($id);
-                if ( $user)
-                    $email = $user->user_email;
-            } elseif ( !empty($id_or_email->comment_author_email) ) {
-                $email = $id_or_email->comment_author_email;
-            }
-        } else {
-            $email = $id_or_email;
-        }
-
-        $hashkey = md5(strtolower(trim($email)));
-        $uri = 'http://www.gravatar.com/avatar/' . $hashkey . '?d=404';
-
-        $data = wp_cache_get($hashkey);
-        if (false === $data) {
-            $response = wp_remote_head($uri);
-            if( is_wp_error($response) ) {
-                $data = 'not200';
-            } else {
-                $data = $response['response']['code'];
-            }
-            wp_cache_set($hashkey, $data, $group = '', $expire = 60*5);
-
-        }
-        if ($data == '200'){
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    private function validate_gravatar($id_or_email) {
+//        //id or email code borrowed from wp-includes/pluggable.php
+//        $email = '';
+//        if ( is_numeric($id_or_email) ) {
+//            $id = (int) $id_or_email;
+//            $user = get_userdata($id);
+//            if ( $user )
+//                $email = $user->user_email;
+//        } elseif ( is_object($id_or_email) ) {
+//            // No avatar for pingbacks or trackbacks
+//            $allowed_comment_types = apply_filters( 'get_avatar_comment_types', array( 'comment' ) );
+//            if ( ! empty( $id_or_email->comment_type ) && ! in_array( $id_or_email->comment_type, (array) $allowed_comment_types ) )
+//                return false;
+//
+//            if ( !empty($id_or_email->user_id) ) {
+//                $id = (int) $id_or_email->user_id;
+//                $user = get_userdata($id);
+//                if ( $user)
+//                    $email = $user->user_email;
+//            } elseif ( !empty($id_or_email->comment_author_email) ) {
+//                $email = $id_or_email->comment_author_email;
+//            }
+//        } else {
+//            $email = $id_or_email;
+//        }
+//
+//        $hashkey = md5(strtolower(trim($email)));
+//        $uri = 'http://www.gravatar.com/avatar/' . $hashkey . '?d=404';
+//
+//        $data = wp_cache_get($hashkey);
+//        if (false === $data) {
+//            $response = wp_remote_head($uri);
+//            if( is_wp_error($response) ) {
+//                $data = 'not200';
+//            } else {
+//                $data = $response['response']['code'];
+//            }
+//            wp_cache_set($hashkey, $data, $group = '', $expire = 60*5);
+//
+//        }
+//        if ($data == '200'){
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 }
