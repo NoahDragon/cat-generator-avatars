@@ -73,16 +73,11 @@ class Avatar {
             return $avatar;
         }
 
-				//JM: check $avatar is not a custom uploaded image, previously custom images were ignored in user listings
-				//and code went on to overwrite with cat-generator image
-				if (stripos($avatar, 'wp-content/uploads/') !== false) {
+        //JM: check $avatar is not a custom uploaded image, previously custom images were ignored in user listings
+        //and code went on to overwrite with cat-generator image
+        if (stripos($avatar, 'wp-content/uploads/') !== false) {
             return $avatar;
         }
-				//JM: gravatar may be (should be) disabled so this check should be removed?
-				//in particular this check slows down the user listing...
-        //if ( $this->validate_gravatar($id_or_email) ) {
-        //    return $avatar;
-        //}
 
         $id = $this->get_identifier($id_or_email);
         $cachepath = $this->pluginfolder.''.$this->cachefolder;
@@ -108,15 +103,15 @@ class Avatar {
     }
 
 
-	/**
-	* This method is used to filter just the avatar URL. Basically the same as set_buddypress_avatar(),
+    /**
+    * This method is used to filter just the avatar URL. Basically the same as set_buddypress_avatar(),
     * but it does not return the full <img /> tag, it just returns the image URL
-	*
-	* @param string $image_url
-	* @param array $params
-	*
-	* @return string
-	*/
+    *
+    * @param string $image_url
+    * @param array $params
+    *
+    * @return string
+    */
     public function get_avatar_url($id_or_email, $size){
 
         $id = $this->get_identifier($id_or_email);
@@ -145,10 +140,10 @@ class Avatar {
             return $html_data; // return original image
         }
 
-			//if we got here because user is submitting a new image,
-			if ( isset( $_POST['avatar-crop-submit'] ) ) {
-				return $html_data; // return original image
-			}
+        //if we got here because user is submitting a new image,
+        if ( isset( $_POST['avatar-crop-submit'] ) ) {
+            return $html_data; // return original image
+        }
 
         // these params are very well documented in BuddyPress' bp-core-avatar.php file:
         $id = $params['item_id'];
@@ -176,58 +171,57 @@ class Avatar {
             return $html_data;
         }
 
-			if (stripos($html_data, 'wp-content/uploads/avatar') !== false){
-				return $html_data;
-			}else{
-				$cat_uri = $this->get_avatar_url($id, $size); // get URL
+        if (stripos($html_data, 'wp-content/uploads/avatar') !== false){
+            return $html_data;
+        }else{
+            $cat_uri = $this->get_avatar_url($id, $size); // get URL
 
         $avatar_img_output = $this->generate_avatar_img_tag($cat_uri, $size, $alt); // get final <img /> tag for the avatar/gravatar
 
         return $avatar_img_output;
-			}
-		}
+        }
+    }
 
-		/**
-		* This method is used to filter just the avatar URL. Basically the same as set_buddypress_avatar(),
-		* but it does not return the full <img /> tag, it just returns the image URL
-		*
-		* @param string $image_url
-		* @param array $params
-		*
-		* @return string
-		*/
-		public function set_buddypress_avatar_url($image_url = '', $params = array()) {
+        /**
+        * This method is used to filter just the avatar URL. Basically the same as set_buddypress_avatar(),
+        * but it does not return the full <img /> tag, it just returns the image URL
+        *
+        * @param string $image_url
+        * @param array $params
+        *
+        * @return string
+        */
+        public function set_buddypress_avatar_url($image_url = '', $params = array()) {
 
-			//if we got here because user is submitting a new image,
-			if ( isset( $_POST['avatar-crop-submit'] ) ) {
-				return $image_url; // return original image
-			}
+            //if we got here because user is submitting a new image,
+            if ( isset( $_POST['avatar-crop-submit'] ) ) {
+                return $image_url; // return original image
+            }
 
-			$user_id = $params['item_id'];
-			$size = $params['width'];
-			$email = $params['email'];
+            $user_id = $params['item_id'];
+            $size = $params['width'];
+            $email = $params['email'];
 
-			if (!is_numeric($user_id)){ // user_id was not passed, so we cannot do anything about this avatar
-				return $image_url;
-			}
+            if (!is_numeric($user_id)){ // user_id was not passed, so we cannot do anything about this avatar
+                return $image_url;
+            }
 
 
 
-			// if there is already a gravatar image or local upload, user has set his own profile avatar,
-			// in which case, just return the input data and leave the avatar as it was:
-			if ((stripos($image_url, 'gravatar.com/avatar') !== false) || (stripos($image_url, 'wp-content/uploads/') !== false)) {
-				return $image_url;
-			}
-			if (empty($size)){ // if for some reason size was not specified...
-				$size = 48; // just set it to 48
-			}
-			if ( ($image_url==='' ) || (stripos($image_url, 'cat-generator') !== false ) ||  (stripos($image_url, 'mystery-man') !== false ) ) {
-				return get_avatar_url($user_id, $size);
-			}else{
-//				return get_avatar_url($user_id, $size);
-				return $image_url;
-			}
-		}
+            // if there is already a gravatar image or local upload, user has set his own profile avatar,
+            // in which case, just return the input data and leave the avatar as it was:
+            if ((stripos($image_url, 'gravatar.com/avatar') !== false) || (stripos($image_url, 'wp-content/uploads/') !== false)) {
+                return $image_url;
+            }
+            if (empty($size)){ // if for some reason size was not specified...
+                $size = 48; // just set it to 48
+            }
+            if ( ($image_url==='' ) || (stripos($image_url, 'cat-generator') !== false ) ||  (stripos($image_url, 'mystery-man') !== false ) ) {
+                return get_avatar_url($user_id, $size);
+            }else{
+                return $image_url;
+            }
+        }
 
     /**
     * Generate full HTML <img /> tag with avatar URL, size, CSS classes etc.
@@ -338,7 +332,7 @@ class Avatar {
         or die("GD image create failed");
         $white   = imagecolorallocate($monster, 255, 255, 255);
         //imagefill($monster,0,0,$white);
-				imagefilledrectangle($monster, 0, 0, 256, 256, $white);
+        imagefilledrectangle($monster, 0, 0, 256, 256, $white);
 
         // add parts
         foreach($parts as $part => $num){
@@ -362,63 +356,9 @@ class Avatar {
         $savedfile = fopen($cachefile, 'w+'); # w+ to be at start of the file, write mode, and attempt to create if not existing.
 
         //imagejpeg($monster, $savedfile);
-				imagepng($monster, $cachefile, 1, PNG_NO_FILTER);
+                imagepng($monster, $cachefile, 1, PNG_NO_FILTER);
 
         imagedestroy($monster);
     }
 
-    /**
-    * Check if Gravatar exists.
-    * From: https://gist.github.com/justinph/5197810
-    *
-    * @param string    $email User email address.
-    *
-    * @return boolean  true: Gravatar exits; false: Gravatar not exits.
-    */
-//    private function validate_gravatar($id_or_email) {
-//        //id or email code borrowed from wp-includes/pluggable.php
-//        $email = '';
-//        if ( is_numeric($id_or_email) ) {
-//            $id = (int) $id_or_email;
-//            $user = get_userdata($id);
-//            if ( $user )
-//                $email = $user->user_email;
-//        } elseif ( is_object($id_or_email) ) {
-//            // No avatar for pingbacks or trackbacks
-//            $allowed_comment_types = apply_filters( 'get_avatar_comment_types', array( 'comment' ) );
-//            if ( ! empty( $id_or_email->comment_type ) && ! in_array( $id_or_email->comment_type, (array) $allowed_comment_types ) )
-//                return false;
-//
-//            if ( !empty($id_or_email->user_id) ) {
-//                $id = (int) $id_or_email->user_id;
-//                $user = get_userdata($id);
-//                if ( $user)
-//                    $email = $user->user_email;
-//            } elseif ( !empty($id_or_email->comment_author_email) ) {
-//                $email = $id_or_email->comment_author_email;
-//            }
-//        } else {
-//            $email = $id_or_email;
-//        }
-//
-//        $hashkey = md5(strtolower(trim($email)));
-//        $uri = 'http://www.gravatar.com/avatar/' . $hashkey . '?d=404';
-//
-//        $data = wp_cache_get($hashkey);
-//        if (false === $data) {
-//            $response = wp_remote_head($uri);
-//            if( is_wp_error($response) ) {
-//                $data = 'not200';
-//            } else {
-//                $data = $response['response']['code'];
-//            }
-//            wp_cache_set($hashkey, $data, $group = '', $expire = 60*5);
-//
-//        }
-//        if ($data == '200'){
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
 }
