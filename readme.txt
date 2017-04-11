@@ -35,6 +35,8 @@ This plugin requires **PHP 5.4**.
 2. **Preview** - Enjoy the cute cat in your discussion. <a href="http://legofan.cc/hello-world/#comments-title" target="_blank">Live Demo</a> 
 
 == Changelog ==
+= 1.0.3 =
+* Added support for Ultimate Member, a popular membership and profiles plugin with 50,000 installs.
 
 = 1.0.2 =
 * Fixed slow avatar generation.
@@ -51,4 +53,6 @@ This plugin requires **PHP 5.4**.
 
 <a href="https://github.com/tfrommen/adorable-avatars" target="_blank">Thorsten Frommen</a> provides the beautiful and clean wordpress plugin structure.
 
-<a href="http://en.abnerchou.me" target="_blank">Abner Chou</a> does the rest work.
+<a href="http://en.abnerchou.me" target="_blank">Abner Chou</a> does the rest of the work.
+
+<a href="http://jonmoblog.wordpress.com/" target="_blank">Jonathan Moore</a> added integrations for BuddyPress and Ultimate Member and performance fixes.

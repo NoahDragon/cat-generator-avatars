@@ -7,7 +7,7 @@
 * Author URI:  http://en.abnerchou.me
 * Artist:      David Revoy
 * Artist URI:	http://www.peppercarrot.com/
-* Version:     1.0.2
+* Version:     1.0.3
 * Text Domain: cat-generator-avatars
 * License:     MIT
 */
@@ -36,7 +36,7 @@ function bootstrap() {
 
     $avatar = new Avatar();
     add_filter( 'avatar_defaults', [ $avatar, 'add_to_defaults' ] );
-    add_filter( 'get_avatar', [ $avatar, 'filter_avatar' ], 10, 6 );
+		add_filter( 'get_avatar', [ $avatar, 'filter_avatar' ], 199999, 6 );
 
 		//stop BuddyPress searching Gravatar
 		add_filter( 'bp_core_fetch_avatar_no_grav', '__return_true' );
