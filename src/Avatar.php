@@ -75,7 +75,7 @@ class Avatar {
 
 				//JM: check $avatar is not a custom uploaded image, previously custom images were ignored in user listings
 				//and code went on to overwrite with cat-generator image
-				if (stripos($avatar, 'wp-content/uploads/avatar') !== false) {
+				if (stripos($avatar, 'wp-content/uploads/') !== false) {
             return $avatar;
         }
 				//JM: gravatar may be (should be) disabled so this check should be removed?
@@ -215,7 +215,7 @@ class Avatar {
 
 			// if there is already a gravatar image or local upload, user has set his own profile avatar,
 			// in which case, just return the input data and leave the avatar as it was:
-			if ((stripos($image_url, 'gravatar.com/avatar') !== false) || (stripos($image_url, 'wp-content/uploads/avatar') !== false)) {
+			if ((stripos($image_url, 'gravatar.com/avatar') !== false) || (stripos($image_url, 'wp-content/uploads/') !== false)) {
 				return $image_url;
 			}
 			if (empty($size)){ // if for some reason size was not specified...
