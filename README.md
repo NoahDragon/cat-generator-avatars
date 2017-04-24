@@ -1,6 +1,11 @@
 # Cat Generator Avatars
 
 [![Build Status](https://travis-ci.org/NoahDragon/cat-generator-avatars.svg?branch=master)](https://travis-ci.org/NoahDragon/cat-generator-avatars)
+[![GitHub GitHub latest](https://img.shields.io/github/release/NoahDragon/cat-generator-avatars.svg)](https://github.com/NoahDragon/cat-generator-avatars/releases)
+[![Wordpress  Wordpress latest](http://img.shields.io/wordpress/plugin/v/cat-generator-avatars.svg)](https://wordpress.org/plugins/cat-generator-avatars)
+[![Wordpress downloads](http://img.shields.io/wordpress/plugin/dt/cat-generator-avatars.svg)](https://wordpress.org/plugins/cat-generator-avatars/)
+[![Wordpress rating](http://img.shields.io/wordpress/plugin/r/cat-generator-avatars.svg)](https://wordpress.org/plugins/cat-generator-avatars/)
+[![license](https://img.shields.io/github/license/NoahDragon/cat-generator-avatars.svg)](https://github.com/NoahDragon/cat-generator-avatars/blob/master/LICENSE)
 
 ## Description
 

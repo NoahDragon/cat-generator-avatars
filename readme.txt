@@ -1,11 +1,11 @@
 === Cat Generator Avatars ===
 Contributors: abnerchou, jonathanmoorebcsorg
 Donate link: https://www.patreon.com/davidrevoy
-Tags: avatar, image, profile, user, cat, buddypress
+Tags: avatar, image, profile, user, cat, buddypress, bbpress, member
 Requires at least: 2.9.0
-Tested up to: 4.7.3
+Tested up to: 4.7.4
 
-This plugin integrates the Cat Generator Avatars avatar into WordPress and BuddyPress.
+This plugin integrates the Cat Generator Avatars avatar into WordPress, BuddyPress and Ultimate Member.
 
 == Description ==
 
