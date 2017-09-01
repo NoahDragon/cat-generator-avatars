@@ -217,7 +217,7 @@ class Avatar {
                 $size = 48; // just set it to 48
             }
             if ( ($image_url==='' ) || (stripos($image_url, 'cat-generator') !== false ) ||  (stripos($image_url, 'mystery-man') !== false ) ) {
-                return get_avatar_url($user_id, $size);
+                return $this->get_avatar_url($user_id, $size);
             }else{
                 return $image_url;
             }
