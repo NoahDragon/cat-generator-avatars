@@ -3,7 +3,7 @@ Contributors: abnerchou, jonathanmoorebcsorg
 Donate link: https://www.patreon.com/davidrevoy
 Tags: avatar, image, profile, user, cat, buddypress, bbpress, member
 Requires at least: 2.9.0
-Tested up to: 4.7.4
+Tested up to: 4.8.1
 
 This plugin integrates the Cat Generator Avatars avatar into WordPress, BuddyPress and Ultimate Member.
 
@@ -35,6 +35,10 @@ This plugin requires **PHP 5.4**.
 2. **Preview** - Enjoy the cute cat in your discussion. <a href="http://legofan.cc/hello-world/#comments-title" target="_blank">Live Demo</a> 
 
 == Changelog ==
+
+= 1.0.4 =
+* Added support for resizing images to the requested size rather than returning 256×256 image and resizing via html/css.
+
 = 1.0.3 =
 * Added support for Ultimate Member, a popular membership and profiles plugin with 50,000 installs.
 
