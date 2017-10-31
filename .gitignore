@@ -33,3 +33,5 @@ phpunit.xml
 
 # Git
 !.gitkeep
+
+*.ora

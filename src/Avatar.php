@@ -87,7 +87,10 @@ class Avatar {
             $this->build_monster($id);
         }
 
-        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder.''.$id.'.png';
+        $resizedfile = $this->vt_resize($cachefile, $size, $size);
+
+        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder .
+            $id.'-'. $size .'x'. $size.'.png';
 
         $avatar = sprintf(
         '<img src="%1$s" srcset="%2$s 2x" width="%3$d" height="%3$d" class="%4$s" alt="%5$s" %6$s>',
@@ -122,7 +125,13 @@ class Avatar {
             $this->build_monster($id);
         }
 
+        $resizedfile = $this->vt_resize($cachefile, $size, $size);
+
+        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder .
+            $id.'-'. $size .'x'. $size.'.png';
+
         $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder.''.$id.'.png';
+        $url = $this->vt_resize($url, $size, $size);
         return $url;
     }
     /**
@@ -361,4 +370,29 @@ class Avatar {
         imagedestroy($monster);
     }
 
+    public function vt_resize( $img_url, $width, $height, $crop = false ) {
+
+        $old_img_info = pathinfo( $img_url );
+        $old_img_ext = '.'. $old_img_info['extension'];
+        $old_img_path = $old_img_info['dirname'] .'/'. $old_img_info['filename'];
+
+        $new_img_dir = str_replace(ABSPATH, '/', $old_img_info['dirname']);
+        $new_img_path = $old_img_path .'-'. $width .'x'. $height . $old_img_ext;
+        $vt_image = [];
+        if (! file_exists($new_img_path) ) {
+            $new_img = wp_get_image_editor( $img_url );
+            $new_img->resize( $width, $height, $crop );
+            $new_img = $new_img->save( $new_img_path );
+            $vt_image = array (
+                'url' => $new_img_dir .'/'. $new_img['file'],
+                'width' => $new_img['width'],
+                'height' => $new_img['height']
+            );
+            return $vt_image['url'];
+        } else {
+//            $new_img = wp_get_image_editor( $img_url );
+           return $new_img_path;
+        }
+
+    }
 }
