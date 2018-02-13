@@ -51,4 +51,11 @@ Copyright (c) 2017 Abner Chou
 
 This code is licensed under the [MIT License](LICENSE).
 
+**Artworks:**
+PNG and ORA files licensed under: [CC-By 4.0](https://creativecommons.org/licenses/by/4.0/) attribution: David Revoy with the following exception: Generated cats used as Avatar (for blog,forum,social-network) don't need direct attribution and so, can be used as regular avatars without pasting David Revoy's name all over the place.
+
+**Code**
+A derivation from the original [MonsterID by Andreas Gohr's](https://www.splitbrain.org/blog/2007-01/20_monsterid_as_gravatar_fallback), PHP licensed under the short, simple and permissive:
+[MIT License](https://en.wikipedia.org/wiki/MIT_License)
+
 
