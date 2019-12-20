@@ -1,0 +1,3 @@
+[submodule "resources/original/cat-avatar-generator"]
+	path = resources/original/cat-avatar-generator
+	url = https://framagit.org/Deevad/cat-avatar-generator.git
