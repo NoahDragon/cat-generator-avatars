@@ -12,7 +12,6 @@ use WP_User;
 * @package abnerchou\CatGeneratorAvatars
 */
 class Avatar {
-
     /**
     * Avatar name.
     * @var string
@@ -39,7 +38,6 @@ class Avatar {
 
     /**
     * Adds "cat-generator-avatar" to the default avatars.
-    *
     * @wp-hook avatar_defaults
     *
     * @param string[] $defaults Array of default avatars.
@@ -47,15 +45,12 @@ class Avatar {
     * @return string[] Array of default avatars, includeing "cat-generator Avatar".
     */
     public function add_to_defaults( array $defaults ) {
-
         $defaults = [ self::NAME => __( 'Cat Avatar (Generated)', 'cat-generator-avatars' ) ] + $defaults;
-
         return $defaults;
     }
 
     /**
     * Filters the avatar image tag.
-    *
     * @wp-hook get_avatar
     *
     * @param string $avatar      Avatar image tag.
@@ -68,7 +63,6 @@ class Avatar {
     * @return string Filtered avatar image tag.
     */
     public function filter_avatar( $avatar, $id_or_email, $size, $default, $alt, array $args ) {
-
         if ( $args['default'] && self::NAME !== $args['default'] ) {
             return $avatar;
         }
@@ -93,18 +87,17 @@ class Avatar {
             $id.'-'. $size .'x'. $size.'.png';
 
         $avatar = sprintf(
-        '<img src="%1$s" srcset="%2$s 2x" width="%3$d" height="%3$d" class="%4$s" alt="%5$s" %6$s>',
-        esc_url( $url ),
-        esc_url( $url ),
-        esc_attr( $size ),
-        esc_attr( $this->get_class_value( $size, $args ) ),
-        esc_attr( $alt ),
-        isset( $args['extra_attr'] ) ? $args['extra_attr'] : ''
+            '<img src="%1$s" srcset="%2$s 2x" width="%3$d" height="%3$d" class="%4$s" alt="%5$s" %6$s>',
+            esc_url( $url ),
+            esc_url( $url ),
+            esc_attr( $size ),
+            esc_attr( $this->get_class_value( $size, $args ) ),
+            esc_attr( $alt ),
+            isset( $args['extra_attr'] ) ? $args['extra_attr'] : ''
         );
 
         return $avatar;
     }
-
 
     /**
     * This method is used to filter just the avatar URL. Basically the same as set_buddypress_avatar(),
@@ -116,7 +109,6 @@ class Avatar {
     * @return string
     */
     public function get_avatar_url($id_or_email, $size){
-
         $id = $this->get_identifier($id_or_email);
         $cachepath = $this->pluginfolder.''.$this->cachefolder;
         $cachefile = ''.$cachepath.''.$id.'.png';
@@ -134,6 +126,7 @@ class Avatar {
         $url = $this->vt_resize($url, $size, $size);
         return $url;
     }
+
     /**
     * This method is used to filter every avatar, except for anonymous comments.
     * It returns full <img /> HTML tag
@@ -144,12 +137,11 @@ class Avatar {
     * @return string
     */
     public function set_buddypress_avatar($html_data = '', $params = array()){
-
         if (empty($params)){ // data not supplied
             return $html_data; // return original image
         }
 
-        //if we got here because user is submitting a new image,
+        //if user is submitting a new image,
         if ( isset( $_POST['avatar-crop-submit'] ) ) {
             return $html_data; // return original image
         }
@@ -161,8 +153,7 @@ class Avatar {
         $alt = $params['alt'];
         $email = $params['email'];
 
-        if ($object == 'user'){ // if we are filtering user's avatar
-
+        if ($object == 'user'){ // filtering user's avatar
             if (empty($id) && $id !== 0){ // if id not specified (and id not equal 0)
                 if (is_user_logged_in()){ // if user logged in
                     $user = get_user_by('id', get_current_user_id());
@@ -171,10 +162,9 @@ class Avatar {
                     return $html_data; // no id specified and user not logged in - return the original image
                 }
             }
-
-        } else if ($object == 'group'){ // we're filtering group
+        } else if ($object == 'group'){ // filtering group
             return $html_data;
-        } else if ($object == 'blog'){ // we're filtering blog
+        } else if ($object == 'blog'){ // filtering blog
             return $html_data;	// this feature is not used at all, so just return the input parameter
         } else { // not user, not group and not blog - just return the input html image
             return $html_data;
@@ -191,46 +181,43 @@ class Avatar {
         }
     }
 
-        /**
-        * This method is used to filter just the avatar URL. Basically the same as set_buddypress_avatar(),
-        * but it does not return the full <img /> tag, it just returns the image URL
-        *
-        * @param string $image_url
-        * @param array $params
-        *
-        * @return string
-        */
-        public function set_buddypress_avatar_url($image_url = '', $params = array()) {
-
-            //if we got here because user is submitting a new image,
-            if ( isset( $_POST['avatar-crop-submit'] ) ) {
-                return $image_url; // return original image
-            }
-
-            $user_id = $params['item_id'];
-            $size = $params['width'];
-            $email = $params['email'];
-
-            if (!is_numeric($user_id)){ // user_id was not passed, so we cannot do anything about this avatar
-                return $image_url;
-            }
-
-
-
-            // if there is already a gravatar image or local upload, user has set his own profile avatar,
-            // in which case, just return the input data and leave the avatar as it was:
-            if ((stripos($image_url, 'gravatar.com/avatar') !== false) || (stripos($image_url, 'wp-content/uploads/') !== false)) {
-                return $image_url;
-            }
-            if (empty($size)){ // if for some reason size was not specified...
-                $size = 48; // just set it to 48
-            }
-            if ( ($image_url==='' ) || (stripos($image_url, 'cat-generator') !== false ) ||  (stripos($image_url, 'mystery-man') !== false ) ) {
-                return $this->get_avatar_url($user_id, $size);
-            }else{
-                return $image_url;
-            }
+    /**
+    * This method is used to filter just the avatar URL. Basically the same as set_buddypress_avatar(),
+    * but it does not return the full <img /> tag, it just returns the image URL
+    *
+    * @param string $image_url
+    * @param array $params
+    *
+    * @return string
+    */
+    public function set_buddypress_avatar_url($image_url = '', $params = array()) {
+        //if we got here because user is submitting a new image,
+        if ( isset( $_POST['avatar-crop-submit'] ) ) {
+            return $image_url; // return original image
         }
+
+        $user_id = $params['item_id'];
+        $size = $params['width'];
+        $email = $params['email'];
+
+        if (!is_numeric($user_id)){ // user_id was not passed, so we cannot do anything about this avatar
+            return $image_url;
+        }
+
+        // if there is already a gravatar image or local upload, user has set his own profile avatar,
+        // in which case, just return the input data and leave the avatar as it was:
+        if ((stripos($image_url, 'gravatar.com/avatar') !== false) || (stripos($image_url, 'wp-content/uploads/') !== false)) {
+            return $image_url;
+        }
+        if (empty($size)){ // size was not specified...
+            $size = 48; // just set it to 48
+        }
+        if ( ($image_url==='' ) || (stripos($image_url, 'cat-generator') !== false ) ||  (stripos($image_url, 'mystery-man') !== false ) ) {
+            return $this->get_avatar_url($user_id, $size);
+        }else{
+            return $image_url;
+        }
+    }
 
     /**
     * Generate full HTML <img /> tag with avatar URL, size, CSS classes etc.
@@ -243,20 +230,18 @@ class Avatar {
     * @return string
     */
     private function generate_avatar_img_tag($avatar_uri, $size, $alt = '', $args = array()){
+        $avatar = sprintf(
+            '<img src="%1$s" srcset="%2$s 2x" width="%3$d" height="%3$d" class="%4$s" alt="%5$s" %6$s>',
+            esc_url( $avatar_uri ),
+            esc_url( $avatar_uri ),
+            esc_attr( $size ),
+            esc_attr( $this->get_class_value( $size, $args ) ),
+            esc_attr( $alt ),
+            isset( $args['extra_attr'] ) ? $args['extra_attr'] : ''
+        );
 
-     $avatar = sprintf(
-     '<img src="%1$s" srcset="%2$s 2x" width="%3$d" height="%3$d" class="%4$s" alt="%5$s" %6$s>',
-     esc_url( $avatar_uri ),
-     esc_url( $avatar_uri ),
-     esc_attr( $size ),
-     esc_attr( $this->get_class_value( $size, $args ) ),
-     esc_attr( $alt ),
-     isset( $args['extra_attr'] ) ? $args['extra_attr'] : ''
-     );
-
-     return $avatar;
+        return $avatar;
     }
-
 
     /**
     * Returns the identifier string for the given user identifier.
@@ -266,15 +251,14 @@ class Avatar {
     * @return string The identifier string for the given user identifier.
     */
     private function get_identifier( $identifier ) {
-
         if ( is_numeric( $identifier ) ) {
             $identifier = get_user_by( 'id', $identifier );
         } elseif ( $identifier instanceof WP_Post ) {
             $identifier = get_user_by( 'id', $identifier->post_author );
         } elseif ( $identifier instanceof WP_Comment ) {
             $identifier = 0 < $identifier->user_id
-            ? get_user_by( 'id', $identifier->user_id )
-            : $identifier->comment_author_email;
+                ? get_user_by( 'id', $identifier->user_id )
+                : $identifier->comment_author_email;
         }
 
         if ( $identifier instanceof WP_User ) {
@@ -297,12 +281,11 @@ class Avatar {
     * @return string The avatar HTML class attribute value
     */
     private function get_class_value( $size, array $args ) {
-
         $class = [
-        'avatar',
-        "avatar-$size",
-        'cat-generator-avatar',
-        'photo',
+            'avatar',
+            "avatar-$size",
+            'cat-generator-avatar',
+            'photo',
         ];
 
         if ( empty( $args['found_avatar'] ) || $args['force_default'] ) {
@@ -357,7 +340,6 @@ class Avatar {
         // restore random seed
         if($seed) srand();
 
-
         $cachepath = $this->pluginfolder.''.$this->cachefolder;
         $cachefile = ''.$cachepath.''.$seed.'.png';
 
@@ -365,13 +347,22 @@ class Avatar {
         $savedfile = fopen($cachefile, 'w+'); # w+ to be at start of the file, write mode, and attempt to create if not existing.
 
         //imagejpeg($monster, $savedfile);
-                imagepng($monster, $cachefile, 1, PNG_NO_FILTER);
+        imagepng($monster, $cachefile, 1, PNG_NO_FILTER);
 
         imagedestroy($monster);
     }
 
+    /**
+    * Resize to fit responsive pageBuild the avatar image if not exists.
+    *
+    * @param string    $img_url image url.
+    * @param int       $width target width.
+    * @param int       $height target height.
+    * @param bool      $crop crop the image, default false.
+    *
+    * @return string
+    */
     public function vt_resize( $img_url, $width, $height, $crop = false ) {
-
         $old_img_info = pathinfo( $img_url );
         $old_img_ext = '.'. $old_img_info['extension'];
         $old_img_path = $old_img_info['dirname'] .'/'. $old_img_info['filename'];
@@ -390,9 +381,8 @@ class Avatar {
             );
             return $vt_image['url'];
         } else {
-//            $new_img = wp_get_image_editor( $img_url );
+           // $new_img = wp_get_image_editor( $img_url );
            return $new_img_path;
         }
-
     }
 }
