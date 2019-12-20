@@ -63,28 +63,20 @@ class Avatar {
     * @return string Filtered avatar image tag.
     */
     public function filter_avatar( $avatar, $id_or_email, $size, $default, $alt, array $args ) {
-        if ( $args['default'] && self::NAME !== $args['default'] ) {
-            return $avatar;
-        }
+        if ( $args['default'] && self::NAME !== $args['default'] ) return $avatar;
 
         //JM: check $avatar is not a custom uploaded image, previously custom images were ignored in user listings
         //and code went on to overwrite with cat-generator image
-        if (stripos($avatar, 'wp-content/uploads/') !== false) {
-            return $avatar;
-        }
+        if (stripos($avatar, 'wp-content/uploads/') !== false) return $avatar;
 
         $id = $this->get_identifier($id_or_email);
         $cachepath = $this->pluginfolder.''.$this->cachefolder;
         $cachefile = ''.$cachepath.''.$id.'.png';
 
-        if (! file_exists($cachefile) ) {
-            $this->build_monster($id);
-        }
+        if (! file_exists($cachefile) ) $this->build_monster($id);
 
         $resizedfile = $this->vt_resize($cachefile, $size, $size);
-
-        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder .
-            $id.'-'. $size .'x'. $size.'.png';
+        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder . $id.'-'. $size .'x'. $size.'.png';
 
         $avatar = sprintf(
             '<img src="%1$s" srcset="%2$s 2x" width="%3$d" height="%3$d" class="%4$s" alt="%5$s" %6$s>',
@@ -95,7 +87,6 @@ class Avatar {
             esc_attr( $alt ),
             isset( $args['extra_attr'] ) ? $args['extra_attr'] : ''
         );
-
         return $avatar;
     }
 
@@ -113,17 +104,14 @@ class Avatar {
         $cachepath = $this->pluginfolder.''.$this->cachefolder;
         $cachefile = ''.$cachepath.''.$id.'.png';
 
-        if (! file_exists($cachefile) ) {
-            $this->build_monster($id);
-        }
+        if (! file_exists($cachefile) ) $this->build_monster($id);
 
         $resizedfile = $this->vt_resize($cachefile, $size, $size);
 
-        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder .
-            $id.'-'. $size .'x'. $size.'.png';
-
+        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder . $id.'-'. $size .'x'. $size.'.png';
         $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder.''.$id.'.png';
         $url = $this->vt_resize($url, $size, $size);
+
         return $url;
     }
 
@@ -174,10 +162,9 @@ class Avatar {
             return $html_data;
         }else{
             $cat_uri = $this->get_avatar_url($id, $size); // get URL
+            $avatar_img_output = $this->generate_avatar_img_tag($cat_uri, $size, $alt); // get final <img /> tag for the avatar/gravatar
 
-        $avatar_img_output = $this->generate_avatar_img_tag($cat_uri, $size, $alt); // get final <img /> tag for the avatar/gravatar
-
-        return $avatar_img_output;
+            return $avatar_img_output;
         }
     }
 
@@ -239,7 +226,6 @@ class Avatar {
             esc_attr( $alt ),
             isset( $args['extra_attr'] ) ? $args['extra_attr'] : ''
         );
-
         return $avatar;
     }
 
@@ -268,7 +254,6 @@ class Avatar {
         }
 
         $identifier = substr(md5( strtolower( trim( $identifier ) ) ),0,6);
-
         return $identifier;
     }
 
@@ -312,26 +297,25 @@ class Avatar {
 
         // throw the dice for body parts
         $parts = array(
-        'body' => rand(1,15),
-        'fur' => rand(1,10),
-        'eyes' => rand(1,15),
-        'mouth' => rand(1,10),
-        'accessorie' => rand(1,20)
+            'body' => rand(1,15),
+            'fur' => rand(1,10),
+            'eyes' => rand(1,15),
+            'mouth' => rand(1,10),
+            'accessorie' => rand(1,20)
         );
 
         // create backgound
-        $monster = @imagecreatetruecolor(256, 256)
-        or die("GD image create failed");
+        $monster = @imagecreatetruecolor(256, 256) or die("GD image create failed");
         $white   = imagecolorallocate($monster, 255, 255, 255);
-        //imagefill($monster,0,0,$white);
         imagefilledrectangle($monster, 0, 0, 256, 256, $white);
 
         // add parts
         foreach($parts as $part => $num){
             $file = $this->pluginfolder.'img/'.$part.'_'.$num.'.png';
-
             $im = @imagecreatefrompng($file);
+
             if(!$im) die('Failed to load '.$file);
+
             imageSaveAlpha($im, true);
             imagecopy($monster,$im,0,0,0,0,256,256);
             imagedestroy($im);
@@ -381,7 +365,6 @@ class Avatar {
             );
             return $vt_image['url'];
         } else {
-           // $new_img = wp_get_image_editor( $img_url );
            return $new_img_path;
         }
     }
