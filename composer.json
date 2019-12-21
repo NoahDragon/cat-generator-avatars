@@ -23,7 +23,8 @@
     "source": "https://github.com/NoahDragon/cat-generator-avatars"
   },
   "require": {
-    "php": ">=5.4.0"
+    "php": ">=5.4.0",
+    "ext-gd": "*"
   },
   "require-dev": {
     "brain/monkey": "^1.4.0",

@@ -69,16 +69,8 @@ class Avatar {
         //and code went on to overwrite with cat-generator image
         if (stripos($avatar, 'wp-content/uploads/') !== false) return $avatar;
 
-        $id = $this->get_identifier($id_or_email);
-        $cachepath = $this->pluginfolder.''.$this->cachefolder;
-        $cachefile = ''.$cachepath.''.$id.'.png';
-
-        if (! file_exists($cachefile) ) $this->build_monster($id);
-
-        $resizedfile = $this->vt_resize($cachefile, $size, $size);
-        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder . $id.'-'. $size .'x'. $size.'.png';
-
-        $avatar = sprintf(
+        $url = get_avatar_url($id_or_email, $size);
+        return sprintf(
             '<img src="%1$s" srcset="%2$s 2x" width="%3$d" height="%3$d" class="%4$s" alt="%5$s" %6$s>',
             esc_url( $url ),
             esc_url( $url ),
@@ -87,15 +79,14 @@ class Avatar {
             esc_attr( $alt ),
             isset( $args['extra_attr'] ) ? $args['extra_attr'] : ''
         );
-        return $avatar;
     }
 
     /**
     * This method is used to filter just the avatar URL. Basically the same as set_buddypress_avatar(),
     * but it does not return the full <img /> tag, it just returns the image URL
     *
-    * @param string $image_url
-    * @param array $params
+    * @param string $id_or_email user ID
+    * @param int $size width/height for square
     *
     * @return string
     */
@@ -104,14 +95,10 @@ class Avatar {
         $cachepath = $this->pluginfolder.''.$this->cachefolder;
         $cachefile = ''.$cachepath.''.$id.'.png';
 
-        if (! file_exists($cachefile) ) $this->build_monster($id);
+        if (! file_exists($cachefile) ) $this->build_avatar($id);
 
-        $resizedfile = $this->vt_resize($cachefile, $size, $size);
-
-        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder . $id.'-'. $size .'x'. $size.'.png';
         $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder.''.$id.'.png';
         $url = $this->vt_resize($url, $size, $size);
-
         return $url;
     }
 
@@ -162,9 +149,7 @@ class Avatar {
             return $html_data;
         }else{
             $cat_uri = $this->get_avatar_url($id, $size); // get URL
-            $avatar_img_output = $this->generate_avatar_img_tag($cat_uri, $size, $alt); // get final <img /> tag for the avatar/gravatar
-
-            return $avatar_img_output;
+            return $this->generate_avatar_img_tag($cat_uri, $size, $alt); // get final <img /> tag for the avatar/gravatar
         }
     }
 
@@ -196,7 +181,7 @@ class Avatar {
         if ((stripos($image_url, 'gravatar.com/avatar') !== false) || (stripos($image_url, 'wp-content/uploads/') !== false)) {
             return $image_url;
         }
-        if (empty($size)){ // size was not specified...
+        if (empty($size)){ // size was not specified.
             $size = 48; // just set it to 48
         }
         if ( ($image_url==='' ) || (stripos($image_url, 'cat-generator') !== false ) ||  (stripos($image_url, 'mystery-man') !== false ) ) {
@@ -216,8 +201,8 @@ class Avatar {
     *
     * @return string
     */
-    private function generate_avatar_img_tag($avatar_uri, $size, $alt = '', $args = array()){
-        $avatar = sprintf(
+    private function generate_avatar_img_tag($avatar_uri, $size, $alt = '', $args = array()) {
+        return sprintf(
             '<img src="%1$s" srcset="%2$s 2x" width="%3$d" height="%3$d" class="%4$s" alt="%5$s" %6$s>',
             esc_url( $avatar_uri ),
             esc_url( $avatar_uri ),
@@ -226,7 +211,6 @@ class Avatar {
             esc_attr( $alt ),
             isset( $args['extra_attr'] ) ? $args['extra_attr'] : ''
         );
-        return $avatar;
     }
 
     /**
@@ -288,10 +272,9 @@ class Avatar {
     * Build the avatar image if not exists.
     *
     * @param string    $seed Input md5 string to use as seed.
-    * @param int       $size Avatar size.
     *
     */
-    private function build_monster($seed=''){
+    private function build_avatar($seed=''){
         // init random seed
         if($seed) srand( hexdec($seed) );
 
@@ -304,10 +287,10 @@ class Avatar {
             'accessorie' => rand(1,20)
         );
 
-        // create backgound
-        $monster = @imagecreatetruecolor(256, 256) or die("GD image create failed");
-        $white   = imagecolorallocate($monster, 255, 255, 255);
-        imagefilledrectangle($monster, 0, 0, 256, 256, $white);
+        // create background
+        $avatar = @imagecreatetruecolor(256, 256) or die("GD image create failed");
+        $white   = imagecolorallocate($avatar, 255, 255, 255);
+        imagefilledrectangle($avatar, 0, 0, 256, 256, $white);
 
         // add parts
         foreach($parts as $part => $num){
@@ -317,7 +300,7 @@ class Avatar {
             if(!$im) die('Failed to load '.$file);
 
             imageSaveAlpha($im, true);
-            imagecopy($monster,$im,0,0,0,0,256,256);
+            imagecopy($avatar,$im,0,0,0,0,256,256);
             imagedestroy($im);
         }
 
@@ -328,12 +311,9 @@ class Avatar {
         $cachefile = ''.$cachepath.''.$seed.'.png';
 
         // Save/cache the output to a file
-        $savedfile = fopen($cachefile, 'w+'); # w+ to be at start of the file, write mode, and attempt to create if not existing.
+        imagepng($avatar, $cachefile, 1, PNG_NO_FILTER);
 
-        //imagejpeg($monster, $savedfile);
-        imagepng($monster, $cachefile, 1, PNG_NO_FILTER);
-
-        imagedestroy($monster);
+        imagedestroy($avatar);
     }
 
     /**
@@ -353,7 +333,7 @@ class Avatar {
 
         $new_img_dir = str_replace(ABSPATH, '/', $old_img_info['dirname']);
         $new_img_path = $old_img_path .'-'. $width .'x'. $height . $old_img_ext;
-        $vt_image = [];
+
         if (! file_exists($new_img_path) ) {
             $new_img = wp_get_image_editor( $img_url );
             $new_img->resize( $width, $height, $crop );
