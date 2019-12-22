@@ -28,6 +28,11 @@ class Avatar {
      */
     const BIRDNAME = 'bird-generator';
     /**
+     * Avatar name.
+     * @var string
+     */
+    const MIXNAME = 'mix-generator';
+    /**
     * @var string
     */
     private $cachefolder;
@@ -58,7 +63,9 @@ class Avatar {
     */
     public function add_to_defaults( array $defaults ) {
         $defaults = [ self::CATNAME => __( 'Cat Avatar (Generated)', 'cat-generator' ),
-                      self::BIRDNAME => __( 'Bird Avatar (Generated)', 'bird-generator' ) ]
+                      self::BIRDNAME => __( 'Bird Avatar (Generated)', 'bird-generator' ),
+                      self::MIXNAME => __('Cat/Bird Avatar (Generated)', 'mix-generator')
+                    ]
                     + $defaults;
         return $defaults;
     }
@@ -77,12 +84,13 @@ class Avatar {
     * @return string Filtered avatar image tag.
     */
     public function filter_avatar( $avatar, $id_or_email, $size, $default, $alt, array $args ) {
-        if ( $args['default'] && self::CATNAME !== $args['default'] && self::BIRDNAME !== $args['default'] ) return $avatar;
+        if ( $args['default'] && self::CATNAME !== $args['default'] && self::BIRDNAME !== $args['default'] && self::MIXNAME !== $args['default']) return $avatar;
 
         //JM: check $avatar is not a custom uploaded image, previously custom images were ignored in user listings
         //and code went on to overwrite with cat-generator image
         if (stripos($avatar, 'wp-content/uploads/') !== false) return $avatar;
 
+        if (self::MIXNAME == $args['default']) $this->isCat = NULL;
         if (self::BIRDNAME == $args['default']) $this->isCat = false;
 
         $url = $this->get_avatar_url($id_or_email, $size);
@@ -243,7 +251,7 @@ class Avatar {
             return '';
         }
 
-        $identifier = substr(md5( strtolower( trim( $identifier ).($this->isCat?self::CATNAME:self::BIRDNAME) ) ),0,6);
+        $identifier = substr(md5( strtolower( trim( $identifier ).(is_null($this->isCat)?self::MIXNAME:($this->isCat?self::CATNAME:self::BIRDNAME)) ) ),0,6);
         return $identifier;
     }
 
@@ -284,6 +292,8 @@ class Avatar {
         // init random seed
         if($seed) srand( hexdec($seed) );
 
+        if (is_null($this->isCat)) $this->isCat = rand(0, 1) == 1; // Mix mode
+
         // throw the dice for body parts
         if (!$this->isCat){ //bird
             $parts = array(
@@ -308,7 +318,7 @@ class Avatar {
         $partsdir = $this->isCat?'cat/':'bird/';
         // create background
         $avatar = @imagecreatetruecolor(256, 256) or die("GD image create failed");
-        $color   = imagecolorallocatealpha($avatar, 0, 0, 0, 127);
+        $color = imagecolorallocatealpha($avatar, 0, 0, 0, 127);
         imagesavealpha($avatar, true);
         imagefill($avatar,0,0,$color);
         imagefilledrectangle($avatar, 0, 0, 256, 256, $color);
@@ -319,7 +329,7 @@ class Avatar {
 
             if(!$im) die('Failed to load '.$file);
 
-            imageSaveAlpha($im, true);
+            imagesavealpha($im, true);
             imagecopy($avatar,$im,0,0,0,0,256,256);
             imagedestroy($im);
         }

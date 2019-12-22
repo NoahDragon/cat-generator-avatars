@@ -1,8 +1,13 @@
 # Changelog
 
+## 2.1.0
+
+* Added mixed mode.
+
 ## 2.0.0
 
 * Added bird avatar.
+* Support transparent background.
 * Cleaned up code base.
 * Tested on the latest WordPress.
 

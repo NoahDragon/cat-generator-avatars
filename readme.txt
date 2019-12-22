@@ -35,6 +35,9 @@ This plugin requires **PHP 5.4**.
 2. **Preview** - Enjoy the cute cat in your discussion. <a href="http://legofan.cc/hello-world/#comments-title" target="_blank">Live Demo</a> 
 
 == Changelog ==
+= 2.1.0 =
+* Added mixed mode.
+
 = 2.0.0 =
 * Added bird avatar.
 * Transparent background.
