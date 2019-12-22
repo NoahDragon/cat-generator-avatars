@@ -47,9 +47,9 @@ Of course, you can also provide me with [translations](https://translate.wordpre
 
 ## License
 
-Copyright (c) 2017 Abner Chou
+Copyright (c) 2020 Abner Chou
 
-This code is licensed under the [MIT License](LICENSE).
+This code is licensed under the [BSD-3 License](LICENCE).
 
 **Artworks:**
 PNG and ORA files licensed under: [CC-By 4.0](https://creativecommons.org/licenses/by/4.0/) attribution: David Revoy with the following exception: Generated cats used as Avatar (for blog,forum,social-network) don't need direct attribution and so, can be used as regular avatars without pasting David Revoy's name all over the place.

@@ -13,27 +13,39 @@ use WP_User;
 */
 class Avatar {
     /**
+     * Plugin name.
+     * @var string
+     */
+    const NAME = 'cat-generator-avatars';
+    /**
     * Avatar name.
     * @var string
     */
-    const NAME = 'cat-generator-avatars';
-
+    const CATNAME = 'cat-generator';
+    /**
+     * Avatar name.
+     * @var string
+     */
+    const BIRDNAME = 'bird-generator';
     /**
     * @var string
     */
     private $cachefolder;
-
     /**
     * @var string
     */
     private $pluginfolder;
+    /**
+     * @var bool
+     */
+    private $isCat = true;
 
     /**
     * Constructor
     */
     public function __construct() {
-        $this->pluginfolder = WP_PLUGIN_DIR . '/cat-generator-avatars/';
-        $this->cachefolder = '/cache/';
+        $this->pluginfolder = WP_PLUGIN_DIR . '/' . self::NAME . '/';
+        $this->cachefolder = 'cache/';
     }
 
     /**
@@ -45,7 +57,9 @@ class Avatar {
     * @return string[] Array of default avatars, includeing "cat-generator Avatar".
     */
     public function add_to_defaults( array $defaults ) {
-        $defaults = [ self::NAME => __( 'Cat Avatar (Generated)', 'cat-generator-avatars' ) ] + $defaults;
+        $defaults = [ self::CATNAME => __( 'Cat Avatar (Generated)', 'cat-generator' ),
+                      self::BIRDNAME => __( 'Bird Avatar (Generated)', 'bird-generator' ) ]
+                    + $defaults;
         return $defaults;
     }
 
@@ -63,22 +77,16 @@ class Avatar {
     * @return string Filtered avatar image tag.
     */
     public function filter_avatar( $avatar, $id_or_email, $size, $default, $alt, array $args ) {
-        if ( $args['default'] && self::NAME !== $args['default'] ) return $avatar;
+        if ( $args['default'] && self::CATNAME !== $args['default'] && self::BIRDNAME !== $args['default'] ) return $avatar;
 
         //JM: check $avatar is not a custom uploaded image, previously custom images were ignored in user listings
         //and code went on to overwrite with cat-generator image
         if (stripos($avatar, 'wp-content/uploads/') !== false) return $avatar;
 
-        $url = get_avatar_url($id_or_email, $size);
-        return sprintf(
-            '<img src="%1$s" srcset="%2$s 2x" width="%3$d" height="%3$d" class="%4$s" alt="%5$s" %6$s>',
-            esc_url( $url ),
-            esc_url( $url ),
-            esc_attr( $size ),
-            esc_attr( $this->get_class_value( $size, $args ) ),
-            esc_attr( $alt ),
-            isset( $args['extra_attr'] ) ? $args['extra_attr'] : ''
-        );
+        if (self::BIRDNAME == $args['default']) $this->isCat = false;
+
+        $url = $this->get_avatar_url($id_or_email, $size);
+        return $this->generate_avatar_img_tag($url, $size, $args);
     }
 
     /**
@@ -92,14 +100,12 @@ class Avatar {
     */
     public function get_avatar_url($id_or_email, $size){
         $id = $this->get_identifier($id_or_email);
-        $cachepath = $this->pluginfolder.''.$this->cachefolder;
-        $cachefile = ''.$cachepath.''.$id.'.png';
+        $cachepath = $this->pluginfolder.$this->cachefolder;
+        $cachefile = $cachepath.$id.'.png';
 
         if (! file_exists($cachefile) ) $this->build_avatar($id);
 
-        $url = plugins_url().'/cat-generator-avatars'.$this->cachefolder.''.$id.'.png';
-        $url = $this->vt_resize($url, $size, $size);
-        return $url;
+        return $this->vt_resize($cachefile, $size, $size);
     }
 
     /**
@@ -201,7 +207,7 @@ class Avatar {
     *
     * @return string
     */
-    private function generate_avatar_img_tag($avatar_uri, $size, $alt = '', $args = array()) {
+    private function generate_avatar_img_tag($avatar_uri, $size, $args = array(), $alt = '') {
         return sprintf(
             '<img src="%1$s" srcset="%2$s 2x" width="%3$d" height="%3$d" class="%4$s" alt="%5$s" %6$s>',
             esc_url( $avatar_uri ),
@@ -237,7 +243,7 @@ class Avatar {
             return '';
         }
 
-        $identifier = substr(md5( strtolower( trim( $identifier ) ) ),0,6);
+        $identifier = substr(md5( strtolower( trim( $identifier ).($this->isCat?self::CATNAME:self::BIRDNAME) ) ),0,6);
         return $identifier;
     }
 
@@ -279,22 +285,36 @@ class Avatar {
         if($seed) srand( hexdec($seed) );
 
         // throw the dice for body parts
-        $parts = array(
-            'body' => rand(1,15),
-            'fur' => rand(1,10),
-            'eyes' => rand(1,15),
-            'mouth' => rand(1,10),
-            'accessorie' => rand(1,20)
-        );
+        if (!$this->isCat){ //bird
+            $parts = array(
+                'body' => rand(1, 9),
+                'eyes' => rand(1, 9),
+                'hoop' => rand(1, 10),
+                'tail' => rand(1, 9),
+                'wing' => rand(1, 9),
+                'bec' => rand(1, 9),
+                'accessorie' => rand(1, 20)
+            );
+        } else { //cat
+            $parts = array(
+                'body' => rand(1,15),
+                'fur' => rand(1,10),
+                'eyes' => rand(1,15),
+                'mouth' => rand(1,10),
+                'accessorie' => rand(1,20)
+            );
+        }
 
+        $partsdir = $this->isCat?'cat/':'bird/';
         // create background
         $avatar = @imagecreatetruecolor(256, 256) or die("GD image create failed");
-        $white   = imagecolorallocate($avatar, 255, 255, 255);
-        imagefilledrectangle($avatar, 0, 0, 256, 256, $white);
+        $color   = imagecolorallocatealpha($avatar, 0, 0, 0, 127);
+        imagesavealpha($avatar, true);
+        imagefill($avatar,0,0,$color);
+        imagefilledrectangle($avatar, 0, 0, 256, 256, $color);
 
-        // add parts
-        foreach($parts as $part => $num){
-            $file = $this->pluginfolder.'img/'.$part.'_'.$num.'.png';
+        foreach($parts as $part => $num){ // add parts
+            $file = $this->pluginfolder.'img/'.$partsdir.$part.'_'.$num.'.png';
             $im = @imagecreatefrompng($file);
 
             if(!$im) die('Failed to load '.$file);
@@ -307,8 +327,8 @@ class Avatar {
         // restore random seed
         if($seed) srand();
 
-        $cachepath = $this->pluginfolder.''.$this->cachefolder;
-        $cachefile = ''.$cachepath.''.$seed.'.png';
+        $cachepath = $this->pluginfolder.$this->cachefolder;
+        $cachefile = $cachepath.$seed.'.png';
 
         // Save/cache the output to a file
         imagepng($avatar, $cachefile, 1, PNG_NO_FILTER);
@@ -319,33 +339,34 @@ class Avatar {
     /**
     * Resize to fit responsive pageBuild the avatar image if not exists.
     *
-    * @param string    $img_url image url.
+    * @param string    $img_uri image url.
     * @param int       $width target width.
     * @param int       $height target height.
     * @param bool      $crop crop the image, default false.
     *
     * @return string
     */
-    public function vt_resize( $img_url, $width, $height, $crop = false ) {
-        $old_img_info = pathinfo( $img_url );
+    public function vt_resize( $img_uri, $width, $height, $crop = false ) {
+        $old_img_info = pathinfo( $img_uri );
         $old_img_ext = '.'. $old_img_info['extension'];
         $old_img_path = $old_img_info['dirname'] .'/'. $old_img_info['filename'];
 
-        $new_img_dir = str_replace(ABSPATH, '/', $old_img_info['dirname']);
-        $new_img_path = $old_img_path .'-'. $width .'x'. $height . $old_img_ext;
+        $new_img_path = $old_img_path.'-'. $width .'x'. $height . $old_img_ext;
+        $new_img_url = str_replace(ABSPATH, '/', $new_img_path); // relative path to the wordpress root.
 
         if (! file_exists($new_img_path) ) {
-            $new_img = wp_get_image_editor( $img_url );
+            $new_img = wp_get_image_editor( $img_uri );
             $new_img->resize( $width, $height, $crop );
             $new_img = $new_img->save( $new_img_path );
+            error_log(print_r($new_img, true));
             $vt_image = array (
-                'url' => $new_img_dir .'/'. $new_img['file'],
+                'url' => $new_img_url,
                 'width' => $new_img['width'],
                 'height' => $new_img['height']
             );
             return $vt_image['url'];
         } else {
-           return $new_img_path;
+           return $new_img_url;
         }
     }
 }
