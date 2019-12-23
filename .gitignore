@@ -30,6 +30,7 @@ phpunit.xml
 
 # SVN folder
 /svn
+/public
 
 # Git
 !.gitkeep

@@ -9,7 +9,7 @@ This plugin integrates the Cat Generator Avatars avatar into WordPress, BuddyPre
 
 == Description ==
 
-This plugin integrates the <a href="http://www.peppercarrot.com/en/article391/cat-avatar-generator" target="_blank">Cat Generator</a> avatar into WordPress.
+This plugin integrates the <a href="http://www.peppercarrot.com/en/article391/cat-avatar-generator" target="_blank">Cat Generator</a> and <a href="https://www.davidrevoy.com/article720/bird-avatar-generator" target="_blank">Bird Generator</a>  avatar into WordPress.
 
 If you like this plugin, please donate to the artist David Revoy via the <a href="https://www.patreon.com/davidrevoy" target="_blank">donation link</a>.
 
