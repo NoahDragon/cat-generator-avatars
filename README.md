@@ -9,7 +9,7 @@
 
 ## Description
 
-This plugin integrates the [Cat Generator](http://www.peppercarrot.com/en/article391/cat-avatar-generator) avatar into WordPress.
+This plugin integrates the [Cat Generator](http://www.peppercarrot.com/en/article391/cat-avatar-generator) and [Bird Generator](https://www.davidrevoy.com/article720/bird-avatar-generator) avatar into WordPress.
 
 ## Installation
 
