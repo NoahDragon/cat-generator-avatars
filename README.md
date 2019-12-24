@@ -1,3 +1,4 @@
+![](resources/assets/banner-772x250.png)
 # Cat Generator Avatars
 
 [![Build Status](https://travis-ci.org/NoahDragon/cat-generator-avatars.svg?branch=master)](https://travis-ci.org/NoahDragon/cat-generator-avatars)
