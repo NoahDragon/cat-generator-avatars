@@ -7,7 +7,7 @@
 * Author URI:  http://en.abnerchou.me
 * Artist:      David Revoy
 * Artist URI:	http://www.peppercarrot.com/
-* Version:     2.1.0
+* Version:     2.1.1
 * Text Domain: cat-generator-avatars
 * License:     BSD-3
 */

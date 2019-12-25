@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1 
+
+* Fix issue that resize image causes blurry.
+
 ## 2.1.0
 
 * Added mixed mode.

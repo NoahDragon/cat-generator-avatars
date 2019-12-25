@@ -113,7 +113,11 @@ class Avatar {
 
         if (! file_exists($cachefile) ) $this->build_avatar($id);
 
-        return $this->vt_resize($cachefile, $size, $size);
+        $url = $this->vt_resize($cachefile, $size, $size);
+
+        if (is_null($url)) return '';
+
+        return $url;
     }
 
     /**
@@ -366,15 +370,19 @@ class Avatar {
 
         if (! file_exists($new_img_path) ) {
             $new_img = wp_get_image_editor( $img_uri );
-            $new_img->resize( $width, $height, $crop );
-            $new_img = $new_img->save( $new_img_path );
-            error_log(print_r($new_img, true));
-            $vt_image = array (
-                'url' => $new_img_url,
-                'width' => $new_img['width'],
-                'height' => $new_img['height']
-            );
-            return $vt_image['url'];
+            if (!is_wp_error($new_img)) {
+                $new_img->set_quality(100);
+                $new_img->resize( $width, $height, $crop );
+                $new_img = $new_img->save( $new_img_path );
+                error_log(print_r($new_img, true));
+                $vt_image = array (
+                    'url' => $new_img_url,
+                    'width' => $new_img['width'],
+                    'height' => $new_img['height']
+                );
+                return $vt_image['url'];
+            } else
+                return NULL;
         } else {
            return $new_img_url;
         }
